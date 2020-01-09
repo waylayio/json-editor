@@ -738,7 +738,7 @@ JSONEditor.defaults.editors.object = JSONEditor.AbstractEditor.extend({
       this.addproperty_controls.appendChild(this.addproperty_holder);
       this.refreshAddProperties();
     }
-            
+
     // Fix table cell ordering
     if(this.options.table_row) {
       this.editor_holder = this.container;
@@ -800,7 +800,7 @@ JSONEditor.defaults.editors.object = JSONEditor.AbstractEditor.extend({
       var json = JSON.parse(this.editjson_textarea.value);
       this.setValue(json);
       this.hideEditJSON();
-      this.onChange(true); 
+      this.onChange(true);
     }
     catch(e) {
       window.alert('invalid JSON');
@@ -1098,6 +1098,10 @@ JSONEditor.defaults.editors.object = JSONEditor.AbstractEditor.extend({
     else if(this.jsoneditor.options.required_by_default) return true;
     else return false;
   },
+  keepEditor: function(editor) {
+   if (this.schema.options && this.schema.options.keep_dependent_editors) return (editor.schema.options && editor.schema.options.dependencies);
+   else return false;
+  },
   setValue: function(value, initial) {
     var self = this;
     value = value || {};
@@ -1112,7 +1116,7 @@ JSONEditor.defaults.editors.object = JSONEditor.AbstractEditor.extend({
         editor.setValue(value[i],initial);
       }
       // Otherwise, remove value unless this is the initial set or it's required
-      else if(!initial && !self.isRequired(editor)) {
+      else if(!initial && !self.isRequired(editor) && !self.keepEditor(editor)) {
         self.removeObjectProperty(i);
       }
       // Otherwise, set the value to the default
