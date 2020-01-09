@@ -60,6 +60,8 @@ JSONEditor.defaults.editors.table = JSONEditor.defaults.editors.array.extend({
     else {
       this.panel = document.createElement('div');
       this.container.appendChild(this.panel);
+      this.error_holder = document.createElement('div');
+      this.panel.appendChild(this.error_holder);
     }
 
     this.panel.appendChild(this.table);
